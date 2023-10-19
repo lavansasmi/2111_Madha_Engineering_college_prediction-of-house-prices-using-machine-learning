@@ -1,0 +1,994 @@
+PREDICTING THE HOUSE PRICES USING MACHINE
+LEARNING
+
+INTRODUCTION:
+
+ Predicting house prices using machine
+learning involves using algorithms and data to
+estimate the market value of a property based
+on its features, such as location, size, and
+amenities.
+ Key steps include data pre processing, feature
+engineering, model selection, and rigorous
+evaluation using metrics like Mean Absolute
+Error (MAE) or Mean Squared Error (MSE).
+
+ Ensuring model interpretability and
+addressing ethical considerations, such as
+bias, are essential. Deployment in a user-
+friendly interface and continuous monitoring
+for updates and market trends are crucial for
+maintaining accuracy in real-world
+applications.
+
+Loading Dataset :
+1. Data Collection:
+
+• Gather a comprehensive dataset that includes relevant
+information about houses. This could encompass data
+sources such as real estate list property tax records or
+publicly available datasets.
+• Ensure that your dataset has a variety of features
+including both numerical (e.g., square footages number of
+bedrooms) and categorical (e.g., locations type of house)
+variables.
+• Pay attention to data quality as missing or inaccurate data
+can significantly impact the performance of your model.
+
+Avg. Area
+Income
+
+Avg.
+Area
+House
+Age
+Avg.
+Area
+Numb
+er of
+Rooms
+Avg.
+Area
+Numbe
+r of
+Bedroo
+ms
+
+Area
+Population Price Address
+
+0 79545.458
+574
+
+5.6828
+61
+7.0091
+88
+4.09 23086.800
+503
+
+1.059034e
++06
+
+208 Michael Ferry
+Apt.
+674\nLaurabury,
+NE 3701...
+
+1 79248.642
+455
+
+6.0029
+00
+6.7308
+21 3.09 40173.072
+174
+
+1.505891e
++06
+
+188 Johnson
+Views Suite
+079\nLake
+Kathleen, CA...
+
+2 61287.067
+179
+
+5.8658
+90
+8.5127
+27 5.13 36882.159
+400
+
+1.058988e
++06
+
+9127 Elizabeth
+Stravenue\nDaniel
+town, WI 06482...
+
+3 63345.240
+046
+
+7.1882
+36
+5.5867
+29 3.26 34310.242
+831
+
+1.260617e
++06
+
+USS Barnett\nFPO
+AP 44820
+
+4 59982.197
+226
+
+5.0405
+55
+7.8393
+88 4.23 26354.109
+472
+
+6.309435e
++05
+
+USNS
+Raymond\nFPO AE
+09386
+
+... ... ... ... ... ... ... ...
+
+499
+5
+60567.944
+140
+
+7.8303
+62
+6.1373
+56 3.46 22837.361
+035
+
+1.060194e
++06
+
+USNS
+Williams\nFPO AP
+30153-7653
+
+499
+6
+78491.275
+435
+
+6.9991
+35
+6.5767
+63 4.02 25616.115
+489
+
+1.482618e
++06
+
+PSC 9258, Box
+8489\nAPO AA
+42991-3352
+
+499
+7
+63390.686
+886
+
+7.2505
+91
+4.8050
+81
+2.13 33266.145
+490
+
+1.030730e
++06
+
+4215 Tracy Garden
+Suite
+076\nJoshualand,
+VA 01...
+
+499
+8
+68001.331
+235
+
+5.5343
+88
+7.1301
+44 5.44 42625.620
+156
+
+1.198657e
++06
+
+USS Wallace\nFPO
+AE 73316
+
+499
+9
+65510.581
+804
+
+5.9923
+05
+6.7923
+36 4.07 46501.283
+803
+
+1.298950e
++06
+
+37778 George
+Ridges Apt.
+509\nEast Holly,
+NV 2...
+
+INPUT:
+dataset.info()
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 5000 entries, 0 to 4999
+Data columns (total 7 columns):
+# Column Non-Null Count Dtype
+--- ------ -------------- -----
+0 Avg. Area Income 5000 non-null float64
+1 Avg. Area House Age 5000 non-null float64
+2 Avg. Area Number of Rooms 5000 non-null float64
+3 Avg. Area Number of Bedrooms 5000 non-null float64
+4 Area Population 5000 non-null float64
+5 Price 5000 non-null float64
+6 Address 5000 non-null object
+dtypes: float64(6), object(1)
+memory usage: 273.6+ KB
+INPUT :
+dataset.describe()
+OUTPUT:
+
+Avg. Area
+Income
+
+Avg. Area
+House
+Age
+
+Avg. Area
+Number
+of Rooms
+
+Avg. Area
+Number
+of
+Bedroom
+s
+
+Area
+Populatio
+n
+
+Price
+
+cou
+nt
+5000.00000
+0
+
+5000.000
+000
+
+5000.000
+000
+
+5000.000
+000
+
+5000.0000
+00
+
+5.000000e
++03
+
+mea
+n
+68583.1089
+84 5.977222 6.987792 3.981330 36163.516
+039
+
+1.232073e
++06
+
+std 10657.9912
+14 0.991456 1.005833 1.234137 9925.6501
+14
+
+3.531176e
++05
+
+min 17796.6311
+90 2.644304 3.236194 2.000000 172.61068
+
+6
+
+1.593866e
++04
+
+25% 61480.5623
+88 5.322283 6.299250 3.140000 29403.928
+702
+
+9.975771e
++05
+
+50% 68804.2864
+04 5.970429 7.002902 4.050000 36199.406
+689
+
+1.232669e
++06
+
+75% 75783.3386
+66 6.650808 7.665871 4.490000 42861.290
+769
+
+1.471210e
++06
+
+max 107701.748
+378 9.519088 10.75958
+
+8 6.500000 69621.713
+378
+
+2.469066e
++06
+
+INPUT :
+dataset.columns
+OUTPUT :
+Index([&#39;Avg. Area Income&#39;, &#39;Avg. Area House Age&#39;, &#39;Avg. Area Number of
+Rooms&#39;,
+&#39;Avg. Area Number of Bedrooms&#39;, &#39;Area Population&#39;, &#39;Price&#39;, &#39;Address&#39;],
+dtype=&#39;object&#39;)
+Visualisation and Pre-Processing of Data:
+2. Data Pre-processing:
+
+• Data Cleaning:
+
+• Identify and handle missing data: You can choose to input
+missing values with averages or medians for numerical
+features and use mode for categorical features or you may
+decide to remove rows or columns with excessive missing
+data.
+• Outlier detection and treatment: Identify outliers in the
+data and decide whether to remove them transform them
+or leave them as-is based on domain knowledge.
+• Error correction: Check for data entry errors and correct
+them if necessary.
+
+• Scaling Feature and Transformation:
+
+• Standardization: Standardize numerical features to have a
+mean of 0 and a standard deviation of 1. This is important
+for algorithms sensitive to feature scales like gradient
+descent-based methods.
+• Normalization: Normalize features to a specific ranges like
+[0s 1s] if needed.
+• on transformation: Apply on transformations to features
+that exhibit skewed distributions which can help improve
+model performance.
+• Categorical Encoding:
+
+• One-Hot Encoding: Convert categorical variables
+into binary vectors where each category becomes a
+binary feature.
+• Label Encoding: Assign a unique integer to each
+category. This is suitable for ordinal categorical data.
+
+INPUT :
+sns.histplot(dataset,x=&#39;Price&#39;,bins=50,color=&#39;y&#39;)
+OUTPUT :
+&lt;Axes: xlabel=&#39;Price&#39;, ylabel=&#39;Count&#39;&gt;
+
+INPUT :
+sns.boxplot(dataset,x=&#39;Price&#39;,palette=&#39;Blues&#39;)
+OUTPUT :
+
+&lt;Axes: xlabel=&#39;Price&#39;&gt;
+
+INPUT :
+sns.jointplot(dataset,x=&#39;Avg. Area House
+Age&#39;,y=&#39;Price&#39;,kind=&#39;hex&#39;)
+OUTPUT :
+&lt;seaborn.axisgrid.JointGrid at 0x7dbe246100a0&gt;
+
+INPUT :
+sns.jointplot(dataset,x=&#39;Avg. Area Income&#39;,y=&#39;Price&#39;)
+OUTPUT:
+&lt;seaborn.axisgrid.JointGrid at 0x7dbe1333c250&gt;
+
+INPUT :
+plt.figure(figsize=(12,8))
+sns.pairplot(dataset)
+OUTPUT :
+&lt;seaborn.axisgrid.PairGrid at 0x7dbe1333c340&gt;
+&lt;Figure size 1200x800 with 0 Axes&gt;
+INPUT :
+dataset.hist(figsize=(10,8)
+OUTPUT :
+array([[&lt;Axes: title={&#39;center&#39;: &#39;Avg. Area Income&#39;}&gt;,
+&lt;Axes: title={&#39;center&#39;: &#39;Avg. Area House Age&#39;}&gt;],
+[&lt;Axes: title={&#39;center&#39;: &#39;Avg. Area Number of Rooms&#39;}&gt;,
+&lt;Axes: title={&#39;center&#39;: &#39;Avg. Area Number of Bedrooms&#39;}&gt;],
+[&lt;Axes: title={&#39;center&#39;: &#39;Area Population&#39;}&gt;,
+&lt;Axes: title={&#39;center&#39;: &#39;Price&#39;}&gt;]], dtype=object)
+
+VISUAL CORRELATION
+
+INPUT :
+dataset.corr(numeric_only=True)
+OUTPUT :
+Avg.
+Area
+Income
+Avg.
+Area
+House
+Age
+
+Avg.
+Area
+Numbe
+r of
+Rooms
+
+Avg.
+Area
+Number
+of
+Bedroo
+ms
+
+Area
+Populati
+on
+
+Price
+
+Avg.
+Area
+Income
+
+1.00000
+0
+
+-
+0.00200
+7
+
+-
+0.01103
+2
+
+0.01978
+8
+
+-
+0.016234
+
+0.63973
+4
+
+Avg.
+Area
+House
+Age
+
+-
+0.00200
+7
+
+1.00000
+0
+
+-
+0.00942
+8
+
+0.00614
+9
+
+-
+0.018743
+
+0.45254
+3
+
+Avg.
+Area
+Number
+of
+Rooms
+-
+0.01103
+2
+
+-
+0.00942
+8
+
+1.00000
+0
+
+0.46269
+5 0.002040 0.33566
+4
+
+Avg.
+Area
+Number
+of
+Bedroom
+s
+
+0.01978
+8
+
+0.00614
+9
+
+0.46269
+5
+
+1.00000
+0
+
+-
+0.022168
+
+0.17107
+1
+
+Area
+Populati
+on
+
+-
+0.01623
+4
+
+-
+0.01874
+3
+
+0.00204
+0
+
+-0.02216
+8 1.000000 0.40855
+6
+
+Price 0.63973
+4
+
+0.45254
+3
+
+0.33566
+4
+
+0.17107
+1 0.408556 1.00000
+0
+
+INPUT :
+plt.figure(figsize=(10,5))
+sns.heatmap(dataset.corr(numeric_only=True),annot=True)
+OUTPUT :
+&lt;Axes: &gt;
+
+INPUT :
+X=dataset[[&#39;Avg. Area Income&#39;,&#39;Avg. Area House Age&#39;,&#39;Avg. Area
+Number of Rooms&#39;,
+&#39;Avg. Area Number of Bedrooms&#39;,&#39;Area Population&#39;]]
+Y=dataset[&#39;Price&#39;]
+Using Train Test Split
+
+INPUT :
+X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.2,ra
+ndom_state=101)
+INPUT :
+Y_train.head()
+OUTPUT :
+3413 1.305210e+06
+1610 1.400961e+06
+3459 1.048640e+06
+4293 1.231157e+06
+1039 1.391233e+06
+Name: Price, dtype: float64
+INPUT :
+Y_train.shape
+OUTPUT :
+(4000,)
+INPUT :
+Y_test.head()
+OUTPUT :
+1718 1.251689e+06
+2511 8.730483e+05
+345 1.696978e+06
+2521 1.063964e+06
+54 9.487883e+05
+Name: Price, dtype: float64
+INPUT :
+Y_test.shape
+OUTPUT :
+
+(1000,)
+ Standardizing the data:
+INPUT :
+sc=StandardScaler()
+X_train_scal=sc.fit_transform(X_train)
+X_test_scal=sc.fit_transform(X_test)
+ Model Building and Evaluation:
+Model 1 - Linear Regression
+
+INPUT :
+model_lr=LinearRegression()
+INPUT :
+model_lr.fit(X_train_scal,Y_train)
+OUTPUT :
+LinearRegression
+LinearRegression()
+ Predicting Prices
+3. Feature Engineering:
+
+• Creating New Features:
+
+• Generate new features that may be more
+informative such as the one of the house (current
+year minus year built).
+• Calculate ratios or proportions between features
+like the price per square foot.
+• Feature Selection:
+• Utilize techniques like correlation analysis to identify
+relationships between features and the target
+variable.
+• Employ feature importance scores from tree-based
+models like Random Forests or Gradient Boosting to
+select the most relevant features.
+• Model Selection:
+
+• Choose appropriate algorithms for regression tasks:
+• Linear Regression: Simple and interpretable but assumes a
+linear relationship between features and target.
+• Decision Threes and Random Forests: Non-linear models
+that can capture complex relationships in the data.
+• Gradient Boosting: Ensemble method that combines
+multiple weak learners to create a strong predictive
+model.
+
+• Support Vector Machines (SVM): Effective for high
+dimensional data.
+• Neural Networks: Deep learning models that can capture
+intricate patterns but may require more data and
+computational resources.
+
+INPUT :
+Prediction1=model_lr.predict(X_test_scal)
+Evaluation of Predicted Data:
+INPUT :
+plt.figure(figsize=(12,6))
+plt.plot(np.arange(len(Y_test)),Y_test,label=&#39;Actual Trend&#39;)
+plt.plot(np.arange(len(Y_test)),Prediction1,label=&#39;Predicted
+Trend&#39;)
+plt.xlabel(&#39;Data&#39;)
+plt.ylabel(&#39;Trend&#39;)
+plt.legend()
+plt.title(&#39;Actual vs Predicted&#39;)
+OUTPUT :
+Text(0.5, 1.0, &#39;Actual vs Predicted&#39;)
+
+INPUT :
+sns.histplot((Y_test-Prediction1),bins=50)
+OUTPUT :
+&lt;Axes: xlabel=&#39;Price&#39;, ylabel=&#39;Count&#39;&gt;&gt;
+
+INPUT :
+print(r2_score(Y_test,Prediction1))
+print(mean_absolute_error(Y_test,Prediction1))
+print(mean_squared_error(Y_test,Prediction1))
+0.9182928179392918
+82295.49779231755
+10469084772.975954
+Model 2 - Support Vector Regressor :
+INPUT :
+model_svr=SVR()
+INPUT :
+model_svr.fit(X_train_scal,Y_train)
+
+OUTPUT :
+SVR
+SVR()
+Predicting Prices
+INPUT :
+Prediction2=model_svr.predict(X_test_scal)
+Evaluation of Predicted Data
+INPUT :
+plt.figure(figsize=(12,6))
+plt.plot(np.arange(len(Y_test)),Y_test,label=&#39;Actual Trend&#39;)
+plt.plot(np.arange(len(Y_test)),Prediction2,label=&#39;Predicted
+Trend&#39;)
+plt.xlabel(&#39;Data&#39;)
+plt.ylabel(&#39;Trend&#39;)
+plt.legend()
+plt.title(&#39;Actual vs Predicted&#39;)
+OUTPUT :
+Text(0.5, 1.0, &#39;Actual vs Predicted&#39;)
+
+INPUT :
+sns.histplot((Y_test-Prediction2),bins=50)
+OUTPUT :
+&lt;Axes: xlabel=&#39;Price&#39;, ylabel=&#39;Count&#39;&gt;
+
+INPUT :
+print(r2_score(Y_test,Prediction2))
+print(mean_absolute_error(Y_test,Prediction2))
+print(mean_squared_error(Y_test,Prediction2))
+-0.0006222175925689744
+286137.81086908665
+128209033251.4034
+Model 3 - Lasso Regression
+INPUT :
+model_lar=Lasso(alpha=1)
+INPUT :
+model_lar.fit(X_train_scal,Y_train)
+OUTPUT :
+Lasso
+
+Lasso(alpha=1)
+
+Predicting Prices
+
+INPUT :
+Prediction3=model_lar.predict(X_test_scal)
+Evaluation of Predicted Data
+INPUT :
+plt.figure(figsize=(12,6))
+plt.plot(np.arange(len(Y_test)),Y_test,label=&#39;Actual Trend&#39;)
+plt.plot(np.arange(len(Y_test)),Prediction3,label=&#39;Predicted
+Trend&#39;)
+plt.xlabel(&#39;Data&#39;)
+plt.ylabel(&#39;Trend&#39;)
+plt.legend()
+plt.title(&#39;Actual vs Predicted&#39;)
+OUTPUT :
+Text(0.5, 1.0, &#39;Actual vs Predicted&#39;)
+
+INPUT :
+
+sns.histplot((Y_test-Prediction3),bins=50)
+OUTPUT :
+&lt;Axes: xlabel=&#39;Price&#39;, ylabel=&#39;Count&#39;&gt;
+
+INPUT :
+print(r2_score(Y_test,Prediction2))
+print(mean_absolute_error(Y_test,Prediction2))
+print(mean_squared_error(Y_test,Prediction2))
+-0.0006222175925689744
+286137.81086908665
+128209033251.4034
+Model 4 - Random Forest Regressor:
+INPUT :
+model_rf=RandomForestRegressor(n_estimators=50)
+INPUT :
+
+model_rf.fit(X_train_scal,Y_train)
+OUTPUT :
+RandomForestRegressor
+RandomForestRegressor(n_estimators=50)
+Predicting Prices
+INPUT :
+Prediction4=model_rf.predict(X_test_scal)
+Evaluation of Predicted Data
+INPUT :
+plt.figure(figsize=(12,6))
+plt.plot(np.arange(len(Y_test)),Y_test,label=&#39;Actual Trend&#39;)
+plt.plot(np.arange(len(Y_test)),Prediction4,label=&#39;Predicted
+Trend&#39;)
+plt.xlabel(&#39;Data&#39;)
+plt.ylabel(&#39;Trend&#39;)
+plt.legend()
+plt.title(&#39;Actual vs Predicted&#39;)
+OUTPUT :
+Text(0.5, 1.0, &#39;Actual vs Predicted&#39;)
+
+INPUT :
+sns.histplot((Y_test-Prediction4),bins=50)
+OUTPUT :
+&lt;Axes: xlabel=&#39;Price&#39;, ylabel=&#39;Count&#39;&gt;
+
+INPUT :
+print(r2_score(Y_test,Prediction2))
+print(mean_absolute_error(Y_test,Prediction2))
+print(mean_squared_error(Y_test,Prediction2))
+-0.0006222175925689744
+286137.81086908665
+128209033251.4034
+Model 5 – XgboostRegressor :
+INPUT :
+model_xg=xg.XGBRegressor()
+
+INPUT :
+model_xg.fit(X_train_scal,Y_train)
+OUTPUT :
+XGBRegressor
+XGBRegressor(base_score=None, booster=None,
+callbacks=None,
+colsample_bylevel=None, colsample_bynode=None,
+colsample_bytree=None, early_stopping_rounds=None,
+enable_categorical=False, eval_metric=None,
+feature_types=None,
+gamma=None, gpu_id=None, grow_policy=None,
+importance_type=None,
+interaction_constraints=None, learning_rate=None,
+max_bin=None,
+max_cat_threshold=None, max_cat_to_onehot=None,
+max_delta_step=None, max_depth=None, max_leaves=None,
+min_child_weight=None, missing=nan,
+monotone_constraints=None,
+n_estimators=100, n_jobs=None, num_parallel_tree=None,
+predictor=None, random_state=None, ...)
+Predicting Prices
+Model 3 - Lasso Regression
+4. Hyper parameter Tuning:
+
+• Experiment with different hyper parameter
+settings to optimize model performance. You
+can use techniques like grid search or random
+
+search to find the best combination of hyper
+parameters.
+
+INPUT :
+model_lar=Lasso(alpha=1)
+INPUT :
+model_lar.fit(X_train_scal,Y_train)
+OUTPUT :
+Lasso
+Lasso(alpha=1)
+
+Predicting Prices
+
+INPUT :
+Prediction3=model_lar.predict(X_test_scal)
+Evaluation of Predicted Data
+INPUT :
+plt.figure(figsize=(12,6))
+plt.plot(np.arange(len(Y_test)),Y_test,label=&#39;Actual Trend&#39;)
+plt.plot(np.arange(len(Y_test)),Prediction3,label=&#39;Predicted
+Trend&#39;)
+plt.xlabel(&#39;Data&#39;)
+plt.ylabel(&#39;Trend&#39;)
+plt.legend()
+plt.title(&#39;Actual vs Predicted&#39;)
+OUTPUT :
+Text(0.5, 1.0, &#39;Actual vs Predicted&#39;)
+
+INPUT :
+sns.histplot((Y_test-Prediction3),bins=50)
+OUTPUT :
+&lt;Axes: xlabel=&#39;Price&#39;, ylabel=&#39;Count&#39;&gt;
+
+INPUT :
+print(r2_score(Y_test,Prediction2))
+print(mean_absolute_error(Y_test,Prediction2))
+print(mean_squared_error(Y_test,Prediction2))
+-0.0006222175925689744
+286137.81086908665
+128209033251.4034
+Model 4 - Random Forest Regressor
+INPUT :
+model_rf=RandomForestRegressor(n_estimators=50)
+INPUT :
+model_rf.fit(X_train_scal,Y_train)
+OUTPUT :
+
+RandomForestRegressor
+RandomForestRegressor(n_estimators=50)
+Predicting Prices
+INPUT :
+Prediction4=model_rf.predict(X_test_scal)
+Evaluation of Predicted Data
+INPUT :
+plt.figure(figsize=(12,6))
+plt.plot(np.arange(len(Y_test)),Y_test,label=&#39;Actual Trend&#39;)
+plt.plot(np.arange(len(Y_test)),Prediction4,label=&#39;Predicted
+Trend&#39;)
+plt.xlabel(&#39;Data&#39;)
+plt.ylabel(&#39;Trend&#39;)
+plt.legend()
+plt.title(&#39;Actual vs Predicted&#39;)
+OUTPUT :
+Text(0.5, 1.0, &#39;Actual vs Predicted&#39;)
+
+INPUT :
+
+sns.histplot((Y_test-Prediction4),bins=50)
+OUTPUT :
+&lt;Axes: xlabel=&#39;Price&#39;, ylabel=&#39;Count&#39;&gt;
+
+INPUT :
+print(r2_score(Y_test,Prediction2))
+print(mean_absolute_error(Y_test,Prediction2))
+print(mean_squared_error(Y_test,Prediction2))
+-0.0006222175925689744
+286137.81086908665
+128209033251.4034
+Model 5 - XGboostRegressor
+INPUT :
+model_xg=xg.XGBRegressor()
+INPUT :
+
+model_xg.fit(X_train_scal,Y_train)
+OUTPUT :
+XGBRegressor
+XGBRegressor(base_score=None, booster=None,
+callbacks=None,
+colsample_bylevel=None, colsample_bynode=None,
+colsample_bytree=None, early_stopping_rounds=None,
+enable_categorical=False, eval_metric=None,
+feature_types=None,
+gamma=None, gpu_id=None, grow_policy=None,
+importance_type=None,
+interaction_constraints=None, learning_rate=None,
+max_bin=None,
+max_cat_threshold=None, max_cat_to_onehot=None,
+max_delta_step=None, max_depth=None, max_leaves=None,
+min_child_weight=None, missing=nan,
+monotone_constraints=None,
+n_estimators=100, n_jobs=None, num_parallel_tree=None,
+predictor=None, random_state=None, ...)
+Predicting Prices
+INPUT :
+Prediction5=model_xg.predict(X_test_scal)
+Evaluation of Predicted Data
+INPUT :
+plt.figure(figsize=(12,6))
+plt.plot(np.arange(len(Y_test)),Y_test,label=&#39;Actual Trend&#39;)
+plt.plot(np.arange(len(Y_test)),Prediction5,label=&#39;Predicted
+Trend&#39;)
+plt.xlabel(&#39;Data&#39;)
+plt.ylabel(&#39;Trend&#39;)
+plt.legend()
+
+plt.title(&#39;Actual vs Predicted&#39;)
+OUTPUT :
+Text(0.5, 1.0, &#39;Actual vs Predicted&#39;)
+
+INPUT :
+sns.histplot((Y_test-Prediction4),bins=50)
+OUTPUT :
+&lt;Axes: xlabel=&#39;Price&#39;, ylabel=&#39;Count&#39;&gt;
+
+INPUT :
+print(r2_score(Y_test,Prediction2))
+print(mean_absolute_error(Y_test,Prediction2))
+print(mean_squared_error(Y_test,Prediction2))
+-0.0006222175925689744
+286137.81086908665
+128209033251.4034
+
+Conclusion :
+
+Thus the prediction of house prices using machine
+learning has been explained clearly with the techniques
+and related example of code with output are explained
+with the given dataset as the model for the prediction
+of house prices using machine learning.
