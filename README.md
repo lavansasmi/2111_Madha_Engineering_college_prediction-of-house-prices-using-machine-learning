@@ -40,7 +40,7 @@ Before you begin, make sure you have the following dependencies installed:
 1. Clone the repository to your local machine:
 
    bash
-   git clone https://github.com/Punithamathialagan/2111_madha_engineering_college_prediction-of-house-prices-using-machine-learning.git
+   git clone https://github.com/lavansasmi/2111_Madha_Engineering_college_prediction-of-house-prices-using-machine-learning
 
 2. Change your working directory to the project folder:
 
@@ -146,7 +146,7 @@ Before you begin, make sure you have the following dependencies installed:
 1. Clone the repository to your local machine:
 
    bash
-   git clone https://github.com/Punithamathialagan/2111_madha_engineering_college_prediction-of-house-prices-using-machine-learning.git
+   git clone https://github.com/lavansasmi/2111_Madha_Engineering_college_prediction-of-house-prices-using-machine-learning
 2. Change your working directory to the project folder:
 
    bash
